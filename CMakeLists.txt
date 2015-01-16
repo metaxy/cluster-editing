@@ -2,6 +2,12 @@ cmake_minimum_required(VERSION 2.6)
 project(cluster4)
 #set(GUROBI_PATH ${PROJECT_SOURCE_DIR}/../gurobi)
 set(GUROBI_PATH ~/bin/gurobi600/linux64/)
+find_path(
+    GUROBI_PATH
+    NAMES include/gurobi_c++.h
+    PATHS ~/bin/gurobi600/linux64/ ${PROJECT_SOURCE_DIR}/../gurobi
+        /afs/akt.tu-berlin.de/user/pwalger/gruppe1/gurobi
+)
 #/afs/akt.tu-berlin.de/user/pwalger/gruppe1/aufgabe4/gurobi600/)
 #set(GUROBI_PATH /home/paul/bin/gurobi600/linux64/)
 set( cluster_SRCS
