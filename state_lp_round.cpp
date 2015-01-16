@@ -20,8 +20,9 @@ int StateLpRound::solve(Graph *result)
         g.setObjective(model);
 
         list<P3> knownP3 = findAllP3s();
-
+        list<Edge> res;
         while(!knownP3.empty()) {
+            res.clear();
             g.addConstraints(knownP3);
             m_recsteps += knownP3.size()*3;
             clog << "new step " << knownP3.size() << endl;
@@ -38,11 +39,17 @@ int StateLpRound::solve(Graph *result)
                     }
                     if(r.choice(prob)) {
                         C.push_back(v);
+                        res.push_back(Edge(u,v));
                     }
                 }
+
                 for(const NodeT v: C) {
                     m_deleted[v] = 1;
                 }
+                V = nodes();
+            }
+            for(Edge e: res) {
+                cout << m_graph->getNodeByInt(e.first) << " " << m_graph->getNodeByInt(e.second) << endl;
             }
             knownP3 = findAllP3s();
         }
