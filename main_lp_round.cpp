@@ -10,6 +10,6 @@ int main()
     s0.solve();
     cout << "#k: " << s0.m_k << endl;
     cout << "#recursive steps: " << s0.m_recsteps << endl;
-	result.output();		
+    //result.output();		
 	return 0;
 }

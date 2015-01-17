@@ -24,10 +24,10 @@ int StateLpRound::solve()
         while(!knownP3.empty()) {
             res.clear();
             g.addConstraints(knownP3);
-            m_recsteps += knownP3.size()*3;
-            clog << "new step " << knownP3.size() << endl;
+            
             ModelRelaxed ret = g.optimizeRelaxed();
             vector<NodeT> V = m_graph->nodes();
+            vector<NodeT> V = nodes();
             while(!V.empty()) {
                 NodeT u = r.randomElement(V);
                 std::list<NodeT> C;
@@ -37,7 +37,8 @@ int StateLpRound::solve()
                     if(m_graph->getWeight(e) > 0) {
                         prob = fplus(prob);
                     }
-                    if(r.choice(prob)) {
+                    //clog << u << " " << v << " prob = " << 1-prob << endl;
+                    if(r.choice(1-prob)) {
                         C.push_back(v);
                         res.push_back(Edge(u,v));
                     }
@@ -48,6 +49,10 @@ int StateLpRound::solve()
             printEdges(res);
             knownP3 = m_graph->findAllP3s();
         }
+        for(Edge e: res) {
+                cout << m_graph->getNodeByInt(e.first) << " " << m_graph->getNodeByInt(e.second) << endl;
+        }
+
        // output(result);
     } catch(GRBException e) {
         clog << "Error code = " << e.getErrorCode() << endl;

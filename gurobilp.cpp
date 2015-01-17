@@ -135,6 +135,7 @@ ModelRelaxed GurobiLP::optimizeRelaxed()
     ModelRelaxed ret;
     for(const auto &i : m_weights) {
         ret[i.first] = weightRelaxed(i.first);
+        clog << i.first.first<< " " << i.first.second << " = " << weightRelaxed(i.first) << endl; 
     }
     return ret;
 }

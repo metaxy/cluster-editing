@@ -1,7 +1,8 @@
 #ifndef COMMON_H
 #define COMMON_H
 
-//#define _DEBUG
+#define _DEBUG
+#include "graph.h"
 #include <cstring>
 #include <tuple>
 #include "graph.h"
