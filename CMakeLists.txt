@@ -9,6 +9,7 @@ message("GUROBI PATH " . ${GUROBI_PATH})
 #set(GUROBI_PATH /home/paul/bin/gurobi600/linux64/)
 set( cluster_SRCS
     graph.cpp
+    mgraph.cpp
     state.cpp
     gurobilp.cpp
     common.cpp

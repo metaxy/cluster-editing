@@ -50,7 +50,7 @@ void GurobiLP::addVarRelaxed(Edge e)
 {
     m_vars[e.first][e.second] = m_model.addVar(0.0, 1.0, 0.0, GRB_CONTINUOUS);
 }
-void GurobiLP::addVars(list<Edge> edges)
+void GurobiLP::addVars(vector<Edge> edges)
 {
     for(const auto &i : edges)
         addVar(i);
@@ -94,7 +94,7 @@ void GurobiLP::addConstraint(P3 p3)
     m_model.addConstr(e(u,v) - e(v,w) + e(u,w) <= 1);
     m_model.addConstr(-e(u,v) + e(v,w) + e(u,w) <= 1);
 }
-void GurobiLP::addConstraints(list<P3> p3s)
+void GurobiLP::addConstraints(vector<P3> p3s)
 {
     de("add constainst");
     for(const auto &i : p3s)

@@ -3,9 +3,13 @@
 #include <string>
 #include <cstring>
 #include <iostream>
-
+#include <map>
 using namespace std;
 typedef int NodeT;
+typedef pair<NodeT,NodeT> Edge;
+typedef tuple<NodeT,NodeT,NodeT> P3;
+typedef map<Edge,int> Model;
+typedef map<Edge,float> ModelRelaxed;
 
 class GNode
 {
@@ -22,6 +26,9 @@ public:
     NodeT v;
     GEdge *next;
     GEdge(NodeT i, NodeT j, GEdge *e) {u = i; v = j; next = e;}
+    Edge toEdge() {
+        return Edge(u,v);
+    }
 };
 
 class Graph

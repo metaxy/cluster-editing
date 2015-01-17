@@ -7,8 +7,8 @@
 class StateBlp : public State
 {
 public:
-    StateBlp(Graph *g);
-    int solve(Graph *result);
+    StateBlp(Graph g);
+    int solve();
 };
 
 #endif // STATE2619_H

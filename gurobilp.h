@@ -13,11 +13,11 @@ class GurobiLP
 public:
     GurobiLP(int nodeCount);
     void setObjective(Model weights);
-    void addVars(list<Edge>);
+    void addVars(vector<Edge>);
     void addModelVars(Model weights);
     void addModelVarsRelaxed(Model weights);
     void addConstraint(P3 p3);
-    void addConstraints(list<P3> p3s);
+    void addConstraints(vector<P3> p3s);
     Model optimize();
     ModelRelaxed optimizeRelaxed();
 private:

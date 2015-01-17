@@ -77,16 +77,4 @@ void Common::printVector(int *vector, unsigned int size)
 #endif
 }
 
-Edge Common::normalize(Edge e)
-{
-    if(e.second > e.first) return Edge(e.second, e.first);
-    return e;
-}
-
-Edge Common::edge(NodeT x, NodeT y)
-{
-    if(y > x) return Edge(y,x);
-    return Edge(x,y);
-}
-
 

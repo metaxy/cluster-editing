@@ -7,8 +7,8 @@
 class StateBlpRel : public State
 {
 public:
-     StateBlpRel(Graph *g);
-     int solve(Graph *result);
+     StateBlpRel(Graph g);
+     int solve();
 
 };
 

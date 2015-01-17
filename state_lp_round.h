@@ -7,8 +7,8 @@
 class StateLpRound : public State
 {
 public:
-     StateLpRound(Graph *g);
-     int solve(Graph *result);
+     StateLpRound(Graph g);
+     int solve();
      float fplus(float x) const;
 
 };

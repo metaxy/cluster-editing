@@ -3,31 +3,28 @@
 #include "gurobilp.h"
 using namespace std;
 
-StateBlp::StateBlp(Graph *g) : State(g)
+StateBlp::StateBlp(Graph g) : State(g)
 {
 }
 
-int StateBlp::solve(Graph *result)
+int StateBlp::solve()
 {
     try {
-        GurobiLP g(m_nodeCount);
-        Model model = createModel();
+        GurobiLP g(m_graph->nodeCount());
+        Model model = m_graph->createModel();
         g.addModelVars(model);
         g.setObjective(model);
 
-        list<P3> knownP3 = findAllP3s();
+        vector<P3> knownP3 = m_graph->findAllP3s();
         while(!knownP3.empty()) {
             g.addConstraints(knownP3);
             m_recsteps += knownP3.size()*3;
             Model ret = g.optimize();
             for(const auto &i: ret) {
-                Edge e = i.first;
-                m_matrix[e.first][e.second] = i.second;
-                m_matrix[e.second][e.first] = i.second;
+                m_graph->setWeight(i.first, i.second);
             }
-            knownP3 = findAllP3s();
+            knownP3 = m_graph->findAllP3s();
         }
-        output(result);
     } catch(GRBException e) {
         clog << "Error code = " << e.getErrorCode() << endl;
         clog << e.getMessage() << endl;

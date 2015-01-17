@@ -2,14 +2,9 @@
 #define COMMON_H
 
 //#define _DEBUG
-#include "graph.h"
 #include <cstring>
 #include <tuple>
-#include <map>
-typedef pair<NodeT,NodeT> Edge;
-typedef tuple<NodeT,NodeT,NodeT> P3;
-typedef map<Edge,int> Model;
-typedef map<Edge,float> ModelRelaxed;
+#include "graph.h"
 class Common
 {
 public:
@@ -20,8 +15,6 @@ public:
     static void printMatrix(int **matrix, unsigned int size);
     static void printVector(int *vector, unsigned int size);
 
-    static Edge normalize(Edge e);
-    static Edge edge(NodeT x, NodeT y);
 };
 
 template <typename T> int sgn(T val) {

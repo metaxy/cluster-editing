@@ -7,34 +7,34 @@ using namespace std;
 #define F_A 0.19
 #define F_B 0.5095
 
-StateLpRound::StateLpRound(Graph *g) : State(g)
+StateLpRound::StateLpRound(Graph g) : State(g)
 {
 }
-int StateLpRound::solve(Graph *result)
+int StateLpRound::solve()
 {
     try {
-        GurobiLP g(m_nodeCount);
+        GurobiLP g(m_graph->nodeCount());
         Randomize r;
-        Model model = createModel();
+        Model model = m_graph->createModel();
         g.addModelVarsRelaxed(model);
         g.setObjective(model);
 
-        list<P3> knownP3 = findAllP3s();
-        list<Edge> res;
+        vector<P3> knownP3 = m_graph->findAllP3s();
+        vector<Edge> res;
         while(!knownP3.empty()) {
             res.clear();
             g.addConstraints(knownP3);
             m_recsteps += knownP3.size()*3;
             clog << "new step " << knownP3.size() << endl;
             ModelRelaxed ret = g.optimizeRelaxed();
-            vector<NodeT> V = nodes();
+            vector<NodeT> V = m_graph->nodes();
             while(!V.empty()) {
                 NodeT u = r.randomElement(V);
                 std::list<NodeT> C;
                 for(const NodeT v : V) {
-                    Edge e = Common::edge(u,v);
+                    Edge e = MGraph::edge(u,v);
                     float prob = 1 - ret[e];
-                    if(getWeight(e) > 0) {
+                    if(m_graph->getWeight(e) > 0) {
                         prob = fplus(prob);
                     }
                     if(r.choice(prob)) {
@@ -43,15 +43,10 @@ int StateLpRound::solve(Graph *result)
                     }
                 }
 
-                for(const NodeT v: C) {
-                    m_deleted[v] = 1;
-                }
-                V = nodes();
+                V = m_graph->nodes();
             }
-            for(Edge e: res) {
-                cout << m_graph->getNodeByInt(e.first) << " " << m_graph->getNodeByInt(e.second) << endl;
-            }
-            knownP3 = findAllP3s();
+            printEdges(res);
+            knownP3 = m_graph->findAllP3s();
         }
        // output(result);
     } catch(GRBException e) {

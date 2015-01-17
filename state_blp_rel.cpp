@@ -2,29 +2,28 @@
 #include <cassert>
 #include "gurobilp.h"
 using namespace std;
-StateBlpRel::StateBlpRel(Graph *g) : State(g)
+StateBlpRel::StateBlpRel(Graph g) : State(g)
 {
 }
-int StateBlpRel::solve(Graph *result)
+int StateBlpRel::solve()
 {
     try {
-        GurobiLP g(m_nodeCount);
-        Model model = createModel();
+        GurobiLP g(m_graph->nodeCount());
+        Model model = m_graph->createModel();
         g.addModelVarsRelaxed(model);
         g.setObjective(model);
 
-        list<P3> knownP3 = findAllP3s();
+        vector<P3> knownP3 = m_graph->findAllP3s();
         while(!knownP3.empty()) {
             g.addConstraints(knownP3);
             m_recsteps += knownP3.size()*3;
             clog << "new step " << knownP3.size() << endl;
             Model ret = g.optimize();
             for(const auto &i: ret) {
-                setWeight(i.first, i.second);
+                m_graph->setWeight(i.first, i.second);
             }
-            knownP3 = findAllP3s();
+            knownP3 = m_graph->findAllP3s();
         }
-        output(result);
     } catch(GRBException e) {
         clog << "Error code = " << e.getErrorCode() << endl;
         clog << e.getMessage() << endl;
