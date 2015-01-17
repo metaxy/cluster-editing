@@ -25,6 +25,7 @@ int StateBlp::solve()
             }
             knownP3 = m_graph->findAllP3s();
         }
+        printEdges(m_graph->difference(m_graphCopy));
     } catch(GRBException e) {
         clog << "Error code = " << e.getErrorCode() << endl;
         clog << e.getMessage() << endl;

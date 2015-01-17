@@ -27,7 +27,6 @@ int StateLpRound::solve()
             
             ModelRelaxed ret = g.optimizeRelaxed();
             vector<NodeT> V = m_graph->nodes();
-            vector<NodeT> V = nodes();
             while(!V.empty()) {
                 NodeT u = r.randomElement(V);
                 std::list<NodeT> C;
@@ -49,10 +48,7 @@ int StateLpRound::solve()
             printEdges(res);
             knownP3 = m_graph->findAllP3s();
         }
-        for(Edge e: res) {
-                cout << m_graph->getNodeByInt(e.first) << " " << m_graph->getNodeByInt(e.second) << endl;
-        }
-
+        printEdges(res);
        // output(result);
     } catch(GRBException e) {
         clog << "Error code = " << e.getErrorCode() << endl;

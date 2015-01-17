@@ -60,6 +60,12 @@ void MGraph::setWeight(Edge e, int weight)
     m_matrix[e.first][e.second] = weight;
     m_matrix[e.second][e.first] = weight;
 }
+void MGraph::flip(const Edge &e)
+{
+    m_matrix[e.first][e.second] = -m_matrix[e.first][e.second];
+    m_matrix[e.second][e.first] = -m_matrix[e.second][e.first];
+}
+
 int MGraph::getWeight(Edge e) const
 {
     return m_matrix[e.first][e.second];
@@ -129,7 +135,7 @@ vector<Edge> MGraph::edges() const
             if(isDeleted(i)) continue;
             list.push_back(Edge(i,j));
         }
-   }
+    }
  }
 
 Model MGraph::createModel() const
@@ -180,4 +186,56 @@ vector<P3> MGraph::findAllP3s() const
 int MGraph::nodeCount() const
 {
     return m_nodeCount;
+}
+
+vector<Edge> MGraph::difference(MGraph *other)
+{
+    vector<Edge> list;
+    for(int i = 0; i < m_nodeCount; i++) {
+        if(isDeleted(i)) continue;
+        for(int j = i+1; j < m_nodeCount; j++) {
+            if(isDeleted(i)) continue;
+            if(other->m_matrix[i][j] - m_matrix[i][j] != 0)
+                list.push_back(Edge(i,j));
+        }
+    }
+    return list;
+}
+
+void MGraph::restoreMerges()
+{
+
+    int count = 0;
+    while(count <= m_nodeCount) {
+        for(int i = 0; i< m_nodeCount; i++) {
+            if(isDeleted(i)) {
+                NodeT mergeTarget = m_deleted[i];
+                if(!isDeleted(mergeTarget)) {
+                    for(int t=0; t < m_nodeCount; t++) {
+                        if(t == mergeTarget) {
+                            m_matrix[i][t] = 1;
+                            m_matrix[t][i] = 1;
+                        } else {
+                            m_matrix[i][t] = connected(mergeTarget,t) ? 1 : -1;
+                            m_matrix[t][i] = connected(mergeTarget,t) ? 1 : -1;
+                        }
+                    }
+                    m_deleted[i] = -1;//i is not anymore deleted
+                } else {
+                    count = -1;
+                }
+            }
+            count++;
+        }
+    }
+}
+
+void MGraph::normalize()
+{
+   for(int i=0; i< m_nodeCount; i++) {
+       for(int j=0; j<m_nodeCount; j++) {
+           m_matrix[i][j] = connected(i,j) ? 1 : -1;
+       }
+   }
+
 }

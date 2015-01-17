@@ -12,7 +12,7 @@ public:
     bool connected(const Edge &e) const;
     int absolut(const Edge &e) const;
     bool isDeleted(NodeT x) const;
-
+    void flip(const Edge &e);
     void setWeight(Edge e, int weight);
     int getWeight(Edge e) const;
 
@@ -29,6 +29,11 @@ public:
     static Edge edge(NodeT x, NodeT y);
 
     int nodeCount() const;
+
+    vector<Edge> difference(MGraph *other);
+
+    void restoreMerges();
+    void normalize();
 private:
     int m_nodeCount;
     bool connected(NodeT x, NodeT y) const;
