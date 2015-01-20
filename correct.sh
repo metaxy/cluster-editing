@@ -1,6 +1,6 @@
 export LC_NUMERIC="en_US.UTF-8"
 
-PROG=ce-lp-round
+PROG=ce-blp
 cd build
 make
 cd ~/programs/material
