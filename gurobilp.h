@@ -21,8 +21,8 @@ public:
     Model optimize();
     ModelRelaxed optimizeRelaxed();
 private:
-    GRBEnv m_env = GRBEnv();
-    GRBModel m_model = GRBModel(m_env);
+    GRBEnv *m_env;
+    GRBModel *m_model;
     int m_nodeCount;
 
     GRBVar **m_vars;

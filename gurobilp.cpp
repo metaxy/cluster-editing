@@ -2,7 +2,9 @@
 
 GurobiLP::GurobiLP(int nodeCount) : m_nodeCount(nodeCount)
 {
-    m_model.getEnv().set(GRB_IntParam_OutputFlag, 0);
+    m_env = new GRBEnv();
+    m_model = new GRBModel(m_env);
+    m_model->getEnv().set(GRB_IntParam_OutputFlag, 0);
 /*    m_model.getEnv().set(GRB_IntParam_Threads, 1);
     m_model.getEnv().set(GRB_IntParam_Method, 1);
     m_model.getEnv().set(GRB_DoubleParam_NodefileStart, 0.5);
@@ -44,11 +46,11 @@ inline float GurobiLP::weightRelaxed(Edge edge)
 }
 void GurobiLP::addVar(Edge e)
 {
-    m_vars[e.first][e.second] = m_model.addVar(0.0, 1.0, 0.0, GRB_BINARY);
+    m_vars[e.first][e.second] = m_model->addVar(0.0, 1.0, 0.0, GRB_BINARY);
 }
 void GurobiLP::addVarRelaxed(Edge e)
 {
-    m_vars[e.first][e.second] = m_model.addVar(0.0, 1.0, 0.0, GRB_CONTINUOUS);
+    m_vars[e.first][e.second] = m_model->addVar(0.0, 1.0, 0.0, GRB_CONTINUOUS);
 }
 void GurobiLP::addVars(vector<Edge> edges)
 {
@@ -60,14 +62,14 @@ void GurobiLP::addModelVars(Model weights)
     for(const auto &kv : weights) {
         addVar(kv.first);
     }
-    m_model.update();
+    m_model->update();
 }
 void GurobiLP::addModelVarsRelaxed(Model weights)
 {
     for(const auto &kv : weights) {
         addVarRelaxed(kv.first);
     }
-    m_model.update();
+    m_model->update();
 }
 void GurobiLP::setObjective(Model weights)
 {
@@ -77,7 +79,7 @@ void GurobiLP::setObjective(Model weights)
         for(const auto &kv : weights) {
             min -= kv.second * e(kv.first);
         }
-        m_model.setObjective(min, GRB_MINIMIZE);
+        m_model->setObjective(min, GRB_MINIMIZE);
         m_weights = weights;
     } catch(GRBException e) {
         clog << "set Objective: Error code = " << e.getErrorCode() << endl;
@@ -90,9 +92,9 @@ void GurobiLP::addConstraint(P3 p3)
     NodeT u = get<0>(p3);
     NodeT v = get<1>(p3);
     NodeT w = get<2>(p3);
-    m_model.addConstr(e(u,v) + e(v,w) - e(u,w) <= 1);
-    m_model.addConstr(e(u,v) - e(v,w) + e(u,w) <= 1);
-    m_model.addConstr(-e(u,v) + e(v,w) + e(u,w) <= 1);
+    m_model->addConstr(e(u,v) + e(v,w) - e(u,w) <= 1);
+    m_model->addConstr(e(u,v) - e(v,w) + e(u,w) <= 1);
+    m_model->addConstr(-e(u,v) + e(v,w) + e(u,w) <= 1);
 }
 void GurobiLP::addConstraints(vector<P3> p3s)
 {
@@ -102,8 +104,8 @@ void GurobiLP::addConstraints(vector<P3> p3s)
 }
 Model GurobiLP::optimize()
 {
-    m_model.optimize();
-    int optimstatus = m_model.get(GRB_IntAttr_Status);
+    m_model->optimize();
+    int optimstatus = m_model->get(GRB_IntAttr_Status);
 
     if (optimstatus == GRB_OPTIMAL) {
     } else if (optimstatus == GRB_INFEASIBLE) {
@@ -121,8 +123,8 @@ Model GurobiLP::optimize()
 }
 ModelRelaxed GurobiLP::optimizeRelaxed()
 {
-    m_model.optimize();
-    int optimstatus = m_model.get(GRB_IntAttr_Status);
+    m_model->optimize();
+    int optimstatus = m_model->get(GRB_IntAttr_Status);
 
     if (optimstatus == GRB_OPTIMAL) {
     } else if (optimstatus == GRB_INFEASIBLE) {
