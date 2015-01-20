@@ -21,7 +21,7 @@ set( cluster_SRCS
 )
 ADD_DEFINITIONS(
     -std=c++11
-    -Ofast
+    #    -Ofast
 )
 include_directories(
    ${GUROBI_PATH}/include
@@ -30,7 +30,7 @@ add_executable(ce-blp ${cluster_SRCS} main_blp.cpp)
 add_executable(ce-blp-rel ${cluster_SRCS} main_blp_rel.cpp)
 add_executable(ce-lp-round ${cluster_SRCS} main_lp_round.cpp)
 find_library(G1 libgurobi_g++4.2.a ${GUROBI_PATH}/lib)
-find_library(G2 libgurobi.so.6.0.0 ${PROJECT_BINARY_DIR} ${GUROBI_PATH}/lib)
+find_library(G2 libgurobi.so.6.0.0 ${GUROBI_PATH}/lib)
 
 target_link_libraries(
     ce-blp
