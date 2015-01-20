@@ -3,7 +3,7 @@
 GurobiLP::GurobiLP(int nodeCount) : m_nodeCount(nodeCount)
 {
     m_env = new GRBEnv();
-    m_model = new GRBModel(m_env);
+    m_model = new GRBModel(*m_env);
     m_model->getEnv().set(GRB_IntParam_OutputFlag, 0);
 /*    m_model.getEnv().set(GRB_IntParam_Threads, 1);
     m_model.getEnv().set(GRB_IntParam_Method, 1);
