@@ -12,7 +12,7 @@ State::State(Graph g) : m_input(g), m_graph(new MGraph(g.nNodes))
 {
     m_k = 0;
     m_recsteps = 0;
-
+    
     for (GEdge *e = g.firstEdge; e != NULL; e = e->next) {
        m_graph->addEdge(e->toEdge());
     }

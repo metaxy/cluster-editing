@@ -1,5 +1,4 @@
 #include "gurobilp.h"
-
 GurobiLP::GurobiLP(int nodeCount) : m_nodeCount(nodeCount)
 {
     m_env = new GRBEnv();

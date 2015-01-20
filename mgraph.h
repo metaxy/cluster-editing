@@ -39,6 +39,7 @@ private:
     bool connected(NodeT x, NodeT y) const;
     int absolut(NodeT u, NodeT v) const;
     int getWeight(NodeT x, NodeT y) const;
+    
     NodeT **m_matrix;
     NodeT *m_deleted;
 

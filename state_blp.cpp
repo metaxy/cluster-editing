@@ -10,7 +10,8 @@ StateBlp::StateBlp(Graph g) : State(g)
 int StateBlp::solve()
 {
     try {
-        GurobiLP g(m_graph->nodeCount());
+        //GurobiLP g(m_graph->nodeCount());
+        GurobiLP g(10);
         Model model = m_graph->createModel();
         g.addModelVars(model);
         g.setObjective(model);

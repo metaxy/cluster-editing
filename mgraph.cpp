@@ -3,7 +3,6 @@
 MGraph::MGraph(int nodeCount) : m_nodeCount(nodeCount)
 {
     m_matrix = new NodeT*[m_nodeCount];
-    m_matrix = new NodeT*[m_nodeCount];
 
     //init vector where is saved whether the node is deleted,
     //when value is -1, this means it is not deleted
@@ -20,7 +19,7 @@ MGraph::MGraph(int nodeCount) : m_nodeCount(nodeCount)
 }
 MGraph::MGraph(MGraph *copy)
 {
-    std::copy(&copy->m_matrix[0][0], &copy->m_matrix[0][0] + copy->m_nodeCount * copy->m_nodeCount, &m_matrix[0][0]);
+   // std::copy(&copy->m_matrix[0][0], &copy->m_matrix[0][0] + copy->m_nodeCount * copy->m_nodeCount, &m_matrix[0][0]);
 }
 
 MGraph::~MGraph()
