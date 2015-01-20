@@ -2,6 +2,7 @@
 #define MGRAPH_H
 #include "common.h"
 #include <vector>
+#include <set>
 class MGraph
 {
 public:
@@ -20,6 +21,7 @@ public:
     int dismerge(Edge e);
 
     vector<NodeT> nodes() const;
+    set<NodeT> nodesSet() const;
     vector<Edge> edges() const;
     Model createModel() const;
 

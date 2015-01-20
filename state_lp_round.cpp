@@ -2,6 +2,7 @@
 #include <cassert>
 #include "gurobilp.h"
 #include "randomize.h"
+#include <algorithm>
 using namespace std;
 
 #define F_A 0.19
@@ -19,37 +20,48 @@ int StateLpRound::solve()
         g.addModelVarsRelaxed(model);
         g.setObjective(model);
 
-        vector<P3> knownP3 = m_graph->findAllP3s();
-        vector<Edge> res;
-        while(!knownP3.empty()) {
-            res.clear();
-            g.addConstraints(knownP3);
-            
-            ModelRelaxed ret = g.optimizeRelaxed();
-            vector<NodeT> V = m_graph->nodes();
-            while(!V.empty()) {
-                NodeT u = r.randomElement(V);
-                std::list<NodeT> C;
-                for(const NodeT v : V) {
-                    Edge e = MGraph::edge(u,v);
-                    float prob = 1 - ret[e];
-                    if(m_graph->getWeight(e) > 0) {
-                        prob = fplus(prob);
-                    }
-                    //clog << u << " " << v << " prob = " << 1-prob << endl;
-                    if(r.choice(1-prob)) {
-                        C.push_back(v);
-                        res.push_back(Edge(u,v));
+        MGraph res(m_graph->nodeCount());
+        for(int u = 0; u <m_graph->nodeCount(); u++) {
+            for(int v = u+1; v <m_graph->nodeCount(); v++) {
+                for(int w = v+1; w <m_graph->nodeCount(); w++) {
+                    if(!m_graph->isDeleted(u) && !m_graph->isDeleted(v) && !m_graph->isDeleted(w)) {
+                        g.addConstraint(P3(u,v,w));
                     }
                 }
-
-                V = m_graph->nodes();
             }
-            printEdges(res);
-            knownP3 = m_graph->findAllP3s();
         }
-        printEdges(res);
-       // output(result);
+        //g.addConstraints(knownP3);
+        
+        ModelRelaxed ret = g.optimizeRelaxed();
+        set<NodeT> V = m_graph->nodesSet();
+        while(!V.empty()) {
+            //clog << "V.size = " <<  V.size() << endl;
+            NodeT u = r.randomElement(V);
+            //clog << "random element " << u << endl; 
+            std::list<NodeT> C;
+            for(const NodeT v : V) {
+                Edge e = MGraph::edge(u,v);
+                double prob = 1 - ret[e];
+        //        clog << ret[e] << endl;
+                if(m_graph->getWeight(e) > 0) {
+                    prob = fplus(prob);
+                }
+                if(r.choice(1-prob)) {
+                    C.push_back(v);
+                }
+            }
+            V.erase(u);
+            //output C
+            for(NodeT y : C) {
+                V.erase(y);
+                for(NodeT v : C) {
+                    if(y == v) continue;
+                    res.setWeight(Edge(y,v), 1);
+                    V.erase(v);
+                }
+            }
+        }
+        printEdges(m_graph->difference(&res));
     } catch(GRBException e) {
         clog << "Error code = " << e.getErrorCode() << endl;
         clog << e.getMessage() << endl;

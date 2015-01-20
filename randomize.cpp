@@ -18,3 +18,11 @@ NodeT Randomize::randomElement(vector<NodeT> list)
     std::uniform_int_distribution<> dis(0, list.size() - 1);
     return list[dis(m_rgen)];
 }
+
+NodeT Randomize::randomElement(set<NodeT> list)
+{
+    std::uniform_int_distribution<> dis(0, list.size() - 1);
+    auto it(list.begin());
+    advance(it, dis(m_rgen));
+    return *it;
+}

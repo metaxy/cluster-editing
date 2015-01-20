@@ -4,7 +4,6 @@
 using namespace std;
 GurobiLP::GurobiLP(int nodeCount) : m_nodeCount(nodeCount)
 {
-    cout << m_nodeCount << endl;
     try {
         m_env = new GRBEnv();
         m_model = new GRBModel(*m_env);
@@ -47,11 +46,12 @@ inline int GurobiLP::weight(Edge edge)
     return weight(edge.first, edge.second);
 }
 
-inline float GurobiLP::weightRelaxed(NodeT x, NodeT y)
+double GurobiLP::weightRelaxed(NodeT x, NodeT y)
 {
+    clog <<  (double)e(x,y).get(GRB_DoubleAttr_X) << endl;
     return e(x,y).get(GRB_DoubleAttr_X);
 }
-inline float GurobiLP::weightRelaxed(Edge edge)
+double GurobiLP::weightRelaxed(Edge edge)
 {
     return weightRelaxed(edge.first, edge.second);
 }
@@ -148,7 +148,7 @@ ModelRelaxed GurobiLP::optimizeRelaxed()
     ModelRelaxed ret;
     for(const auto &i : m_weights) {
         ret[i.first] = weightRelaxed(i.first);
-        clog << i.first.first<< " " << i.first.second << " = " << weightRelaxed(i.first) << endl; 
+     //   clog << i.first.first<< " " << i.first.second << " = " << weightRelaxed(i.first) << endl; 
     }
     return ret;
 }

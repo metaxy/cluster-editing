@@ -19,7 +19,16 @@ MGraph::MGraph(int nodeCount) : m_nodeCount(nodeCount)
 }
 MGraph::MGraph(MGraph *copy)
 {
-   // std::copy(&copy->m_matrix[0][0], &copy->m_matrix[0][0] + copy->m_nodeCount * copy->m_nodeCount, &m_matrix[0][0]);
+    m_nodeCount = copy->m_nodeCount;
+    m_matrix = new NodeT*[m_nodeCount];
+    m_deleted = new NodeT[m_nodeCount];
+    for(int i = 0; i < m_nodeCount; i++) {
+        m_deleted[i] = copy->m_deleted[i];
+        m_matrix[i] = new NodeT[m_nodeCount];
+        for(int j = 0; j < m_nodeCount; j++) {
+            m_matrix[i][j] = copy->m_matrix[i][j];
+        }
+    }
 }
 
 MGraph::~MGraph()
@@ -124,6 +133,18 @@ vector<NodeT> MGraph::nodes() const
     }
     return list;
 }
+
+set<NodeT> MGraph::nodesSet() const
+{
+    set<NodeT> list;
+    for(int i = 0; i < m_nodeCount; i++) {
+        if(!isDeleted(i)) {
+            list.insert(i);
+        }
+    }
+    return list;
+}
+
 
 vector<Edge> MGraph::edges() const
 {

@@ -29,9 +29,9 @@ private:
     inline GRBVar e(NodeT x, NodeT y);
     inline GRBVar e(Edge);
     inline int weight(NodeT x, NodeT y);
-    inline float weightRelaxed(NodeT x, NodeT y);
+    double weightRelaxed(NodeT x, NodeT y);
     inline int weight(Edge);
-    inline float weightRelaxed(Edge);
+    double weightRelaxed(Edge);
     void addVar(Edge e);
     void addVarRelaxed(Edge e);
 
