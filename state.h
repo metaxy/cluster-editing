@@ -16,7 +16,6 @@ public:
     void solveZK(Graph *result);
     void printState();
 
-    State * clone(Graph *g);
     virtual int solve() = 0;
 
     unsigned int m_k;

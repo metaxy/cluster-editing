@@ -1,8 +1,4 @@
 #include "state.h"
-#include "state_blp.h"
-#include "state_blp_rel.h"
-#include "state_lp_round.h"
-#include "state_lp_round.h"
 #include <cassert>
 #include <sstream>
 
@@ -60,13 +56,6 @@ void State::printState()
 {
 }
 
-State * State::clone(Graph *g)
-{  
-    if(dynamic_cast<StateBlp*> (this)) return new StateBlp(m_input);
-    if(dynamic_cast<StateBlpRel*> (this)) return new StateBlpRel(m_input);
-    if(dynamic_cast<StateLpRound*> (this)) return new StateLpRound(m_input);
-    return nullptr;
-}
 void State::printEdge(const Edge &e)
 {
     cout << m_input.getNodeByInt(e.first) << " " << m_input.getNodeByInt(e.second) << endl;
