@@ -7,6 +7,7 @@ class MGraph
 {
 public:
     MGraph(int nodeCount);
+    MGraph(Graph input);
     MGraph(MGraph *copy);
     ~MGraph();
     void addEdge(const Edge &e);
@@ -23,6 +24,7 @@ public:
     vector<NodeT> nodes() const;
     set<NodeT> nodesSet() const;
     vector<Edge> edges() const;
+    set<NodeT> neighborhood(NodeT node) const;
     Model createModel() const;
 
     vector<P3> findAllP3s() const;
@@ -36,8 +38,13 @@ public:
 
     void restoreMerges();
     void normalize();
+
+    void printMatrix() const;
+    string printGraph(P3 p3 = P3(0,0,0));
+    void writeGraph(string fileName, P3 p3 = P3(0,0,0));
 private:
     int m_nodeCount;
+    Graph m_input;
     bool connected(NodeT x, NodeT y) const;
     int absolut(NodeT u, NodeT v) const;
     int getWeight(NodeT x, NodeT y) const;

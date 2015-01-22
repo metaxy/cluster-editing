@@ -1,4 +1,6 @@
 #include "mgraph.h"
+#include <fstream>
+#include <sstream>
 
 MGraph::MGraph(int nodeCount) : m_nodeCount(nodeCount)
 {
@@ -17,9 +19,14 @@ MGraph::MGraph(int nodeCount) : m_nodeCount(nodeCount)
        memset(this->m_matrix[i], -1, m_nodeCount * sizeof(NodeT));
     }
 }
+MGraph::MGraph(Graph input) : MGraph(input.nNodes)
+{
+    m_input = input;
+}
 MGraph::MGraph(MGraph *copy)
 {
     m_nodeCount = copy->m_nodeCount;
+    m_input = copy->m_input;
     m_matrix = new NodeT*[m_nodeCount];
     m_deleted = new NodeT[m_nodeCount];
     for(int i = 0; i < m_nodeCount; i++) {
@@ -214,7 +221,7 @@ vector<Edge> MGraph::difference(MGraph *other)
     for(int i = 0; i < m_nodeCount; i++) {
         if(isDeleted(i)) continue;
         for(int j = i+1; j < m_nodeCount; j++) {
-            if(isDeleted(i)) continue;
+            if(isDeleted(j)) continue;
             if(other->m_matrix[i][j] - m_matrix[i][j] != 0)
                 list.push_back(Edge(i,j));
         }
@@ -258,4 +265,65 @@ void MGraph::normalize()
        }
    }
 
+}
+set<NodeT> MGraph::neighborhood(NodeT node) const
+{
+    set<NodeT> ret;
+    for(int i = 0; i< m_nodeCount; i++) {
+        if(isDeleted(i) || node == i) continue;
+        if(connected(node, i)) ret.insert(i);
+    }
+    return ret;
+}
+
+void MGraph::printMatrix() const
+{
+    #ifdef _DEBUG
+    Common::printMatrix(m_matrix, m_nodeCount);
+    #endif
+}
+
+string MGraph::printGraph(P3 p3)
+{
+    #ifdef _DEBUG
+    string ret = "digraph G {\n";
+    ret += "edge [dir=none]\n";
+    const NodeT a = get<0>(p3);
+    const NodeT b = get<1>(p3);
+    const NodeT c = get<2>(p3);
+    for(int x = 0; x < m_nodeCount; x++) {
+        if(isDeleted(x))
+            continue;
+
+        for(int y = x+1; y < m_nodeCount; y++) {
+            if(!isDeleted(y) && connected(x,y)) {
+                ret += "" +  m_input.getNodeByInt(x) + " -> " +  m_input.getNodeByInt(y) + " [label=\""+std::to_string(m_matrix[x][y]) + "\"";
+
+                if((x == a && y == c) || (x == c && y == a) ||
+                   (x == b && y == c) || (x == c && y == b) ||
+                   (x == a && y == b) || (x == b && y == a)
+                   ) {
+                    ret += ",color=red";
+                }
+                ret += "];\n";
+            }
+        }
+    }
+    ret += "\n}\n";
+    return ret;
+    #endif
+}
+
+
+void MGraph::writeGraph(string fileName, P3 p3)
+{
+    #ifdef _DEBUG
+    std::ofstream fout(fileName+".dot");
+    fout << printGraph(p3);
+    fout.close();
+    std::stringstream stream;
+    stream << "dot -Tpng \"" << fileName << ".dot\" -o \"" << fileName << ".png\"";
+    system(stream.str().c_str());
+    //remove((fileName+".dot").c_str());
+    #endif
 }

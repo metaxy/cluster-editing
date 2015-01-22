@@ -1,10 +1,11 @@
 #ifndef COMMON_H
 #define COMMON_H
 
-//#define _DEBUG
+#define _DEBUG
 #include "graph.h"
 #include <cstring>
 #include <tuple>
+#include <set>
 #include "graph.h"
 class Common
 {
@@ -15,6 +16,7 @@ public:
 
     static void printMatrix(int **matrix, unsigned int size);
     static void printVector(int *vector, unsigned int size);
+
 
 };
 
@@ -29,4 +31,23 @@ template <typename T> int sgn(T val) {
 #define de(str) do { } while ( false )
 #endif
 
+template<typename T> set<T> set_intersect(set<T> a, set<T> b)
+{
+    set<T> ret;
+    for(const T &t : a) {
+        if(b.count(t) == 1) ret.insert(t);
+    }
+    return ret;
+}
+template<typename T> set<T> set_union(set<T> a, set<T> b)
+{
+    set<T> ret;
+    for(const T &t : a) {
+        ret.insert(t);
+    }
+    for(const T &t : b) {
+        ret.insert(t);
+    }
+    return ret;
+}
 #endif // COMMON_H

@@ -12,23 +12,20 @@ int StateApprox3::solve()
 {
     Randomize r;
 
-    MGraph res(m_graph->nodeCount());
+    MGraph res(m_input);
 
-    set<NodeT> V = m_graph->nodesSet();
-    while(!V.empty()) {
-        NodeT u = r.randomElement(V);
-        std::list<NodeT> C;
-        for(const NodeT v : V) {
-        }
-        V.erase(u);
-        //output C
-        for(NodeT y : C) {
-            V.erase(y);
-            for(NodeT v : C) {
-                if(y == v) continue;
-                res.setWeight(Edge(y,v), 1);
-                V.erase(v);
+    set<NodeT> nodes = m_graph->nodesSet();
+    while(!nodes.empty()) {
+        NodeT u = r.randomElement(nodes);
+        set<NodeT> cluster = m_graph->neighborhood(u);
+        cluster.insert(u);
+        cluster = set_intersect(cluster, nodes);
+        for(NodeT v : cluster) {
+            for(NodeT w : cluster) {
+                if(v == w) continue;
+                res.setWeight(Edge(v,w), 1);
             }
+            nodes.erase(v);
         }
     }
     printEdges(m_graph->difference(&res));

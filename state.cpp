@@ -4,7 +4,7 @@
 
 using namespace std;
 
-State::State(Graph g) : m_input(g), m_graph(new MGraph(g.nNodes))
+State::State(Graph g) : m_input(g), m_graph(new MGraph(g))
 {
     m_k = 0;
     m_recsteps = 0;
@@ -65,4 +65,5 @@ void State::printEdges(vector<Edge> edges)
 {
     for(const Edge &e: edges)
         printEdge(e);
+    cout << "#k: " << edges.size() << endl;
 }
