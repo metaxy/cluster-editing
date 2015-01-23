@@ -4,21 +4,20 @@
 
 using namespace std;
 
-State::State(Graph g) : m_input(g), m_graph(new MGraph(g))
+State::State(Graph g)
 {
     m_k = 0;
+    MGraph a(g);
+    m_graph = a;
     m_recsteps = 0;
     
     for (GEdge *e = g.firstEdge; e != NULL; e = e->next) {
-       m_graph->addEdge(e->toEdge());
+       m_graph.addEdge(e->toEdge());
     }
-    m_graphCopy = new MGraph(m_graph);
 
 }
 State::~State()
 {
-    delete m_graph;
-    delete m_graphCopy;
 }
 void State::branch()
 {
@@ -51,9 +50,13 @@ void State::branch()
     return 1;
 */
 }
-
-void State::printState()
+void State::solveFull()
 {
+    MGraph current(&m_graph);
+    MGraph solved = this->solve(current);
+    auto edges = m_graph.difference(&solved);
+    cout << "#k: " << edges.size() << endl;
+    printEdges(edges);
 }
 
 void State::printEdge(const Edge &e)
@@ -65,5 +68,12 @@ void State::printEdges(vector<Edge> edges)
 {
     for(const Edge &e: edges)
         printEdge(e);
-    cout << "#k: " << edges.size() << endl;
+}
+
+void State::reduceZero(MGraph *graph)
+{
+    for(Edge e : graph->connectedEdges()) {
+        if(graph->mergeCost(e) == 0)
+            graph->merge(e);
+    }
 }

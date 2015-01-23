@@ -8,7 +8,7 @@ class StateBlp : public State
 {
 public:
     StateBlp(Graph g);
-    int solve();
+    MGraph solve(MGraph graph);
 };
 
 #endif // STATE2619_H

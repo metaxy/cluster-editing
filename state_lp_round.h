@@ -8,7 +8,7 @@ class StateLpRound : public State
 {
 public:
      StateLpRound(Graph g);
-     int solve();
+     MGraph solve(MGraph graph);
      float fplus(float x) const;
 
 };

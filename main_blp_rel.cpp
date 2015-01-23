@@ -6,6 +6,6 @@ int main()
 	g.read();
 
     StateBlpRel s0(g);
-    s0.solve();
+    s0.solveFull();
 	return 0;
 }

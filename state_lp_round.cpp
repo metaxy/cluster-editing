@@ -11,20 +11,20 @@ using namespace std;
 StateLpRound::StateLpRound(Graph g) : State(g)
 {
 }
-int StateLpRound::solve()
+MGraph StateLpRound::solve(MGraph graph)
 {
     try {
-        GurobiLP g(m_graph->nodeCount());
+        GurobiLP g(graph.nodeCount());
         Randomize r;
-        Model model = m_graph->createModel();
+        Model model = graph.createModel();
         g.addModelVarsRelaxed(model);
         g.setObjective(model);
 
-        MGraph res(m_graph->nodeCount());
-        for(int u = 0; u <m_graph->nodeCount(); u++) {
-            for(int v = u+1; v <m_graph->nodeCount(); v++) {
-                for(int w = v+1; w <m_graph->nodeCount(); w++) {
-                    if(!m_graph->isDeleted(u) && !m_graph->isDeleted(v) && !m_graph->isDeleted(w)) {
+        MGraph res(graph.nodeCount());
+        for(int u = 0; u <graph.nodeCount(); u++) {
+            for(int v = u+1; v <graph.nodeCount(); v++) {
+                for(int w = v+1; w <graph.nodeCount(); w++) {
+                    if(!graph.isDeleted(u) && !graph.isDeleted(v) && !graph.isDeleted(w)) {
                         g.addConstraint(P3(u,v,w));
                     }
                 }
@@ -33,7 +33,7 @@ int StateLpRound::solve()
         //g.addConstraints(knownP3);
         
         ModelRelaxed ret = g.optimizeRelaxed();
-        set<NodeT> V = m_graph->nodesSet();
+        set<NodeT> V = graph.nodesSet();
         while(!V.empty()) {
             //clog << "V.size = " <<  V.size() << endl;
             NodeT u = r.randomElement(V);
@@ -43,7 +43,7 @@ int StateLpRound::solve()
                 Edge e = MGraph::edge(u,v);
                 double prob = 1 - ret[e];
         //        clog << ret[e] << endl;
-                if(m_graph->getWeight(e) > 0) {
+                if(graph.getWeight(e) > 0) {
                     prob = fplus(prob);
                 }
                 if(r.choice(1-prob)) {
@@ -61,7 +61,7 @@ int StateLpRound::solve()
                 }
             }
         }
-        printEdges(m_graph->difference(&res));
+        return graph;
     } catch(GRBException e) {
         clog << "Error code = " << e.getErrorCode() << endl;
         clog << e.getMessage() << endl;

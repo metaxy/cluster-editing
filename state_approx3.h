@@ -8,7 +8,7 @@ class StateApprox3 : public State
 {
 public:
      StateApprox3(Graph g);
-     int solve();
+     MGraph solve(MGraph graph);
 
 };
 

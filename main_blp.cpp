@@ -6,6 +6,6 @@ int main()
     //Graph g = Common::graphFromFile("/home/paul/Cloud/studium/Cluster/programs/material/ce-data/test014.graph");
  //   Graph g = Common::graphFromFile("../../programs/material/ce-data/test014.graph");
     StateBlp s0(g);
-    s0.solve();
+    s0.solveFull();
 	return 0;
 }

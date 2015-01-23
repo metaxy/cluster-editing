@@ -1,6 +1,10 @@
 #include "mgraph.h"
 #include <fstream>
 #include <sstream>
+MGraph::MGraph()
+{
+
+}
 
 MGraph::MGraph(int nodeCount) : m_nodeCount(nodeCount)
 {
@@ -89,6 +93,13 @@ int MGraph::getWeight(NodeT x, NodeT y) const
 {
     return m_matrix[x][y];
 }
+void MGraph::clear()
+{
+    for(Edge e : edges()) {
+        setWeight(e, -1); //not connected
+    }
+}
+
 int MGraph::merge(const Edge e)
 {
     const NodeT u = e.first;
@@ -164,6 +175,17 @@ vector<Edge> MGraph::edges() const
         }
     }
  }
+vector<Edge> MGraph::connectedEdges() const
+{
+    vector<Edge> list;
+    for(int i = 0; i < m_nodeCount; i++) {
+        if(isDeleted(i)) continue;
+        for(int j = i+1; j < m_nodeCount; j++) {
+            if(!isDeleted(i) && connected(i,j)) {
+                list.push_back(Edge(i,j));
+            }
+        }
+    } }
 
 Model MGraph::createModel() const
 {
@@ -326,4 +348,21 @@ void MGraph::writeGraph(string fileName, P3 p3)
     system(stream.str().c_str());
     //remove((fileName+".dot").c_str());
     #endif
+}
+
+int MGraph::mergeCost(NodeT u, NodeT v) const
+{
+    int depth = 0;
+    for(int t = 0; t< m_nodeCount; t++) {
+        if(t != u && t != v && !isDeleted(t)) {
+            if(sgn(m_matrix[t][u]) != sgn(m_matrix[t][v])) {
+                depth += min(abs(m_matrix[t][u]), abs(m_matrix[t][v]));
+            }
+        }
+    }
+    return depth;
+}
+int MGraph::mergeCost(Edge e) const
+{
+    return mergeCost(e.first,e.second);
 }

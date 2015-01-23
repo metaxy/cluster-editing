@@ -6,6 +6,7 @@
 class MGraph
 {
 public:
+    MGraph();
     MGraph(int nodeCount);
     MGraph(Graph input);
     MGraph(MGraph *copy);
@@ -17,6 +18,7 @@ public:
     void flip(const Edge &e);
     void setWeight(Edge e, int weight);
     int getWeight(Edge e) const;
+    void clear();
 
     int merge(Edge e);
     int dismerge(Edge e);
@@ -42,6 +44,10 @@ public:
     void printMatrix() const;
     string printGraph(P3 p3 = P3(0,0,0));
     void writeGraph(string fileName, P3 p3 = P3(0,0,0));
+
+    int mergeCost(NodeT u, NodeT v) const;
+    int mergeCost(Edge e) const;
+    vector<Edge> connectedEdges() const;
 private:
     int m_nodeCount;
     Graph m_input;

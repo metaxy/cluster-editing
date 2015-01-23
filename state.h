@@ -14,9 +14,10 @@ public:
 
     void branch();
     void solveZK(Graph *result);
-    void printState();
 
-    virtual int solve() = 0;
+    virtual MGraph solve(MGraph graph) = 0;
+
+    virtual void solveFull();
 
     unsigned int m_k;
     unsigned int m_recsteps;
@@ -26,10 +27,11 @@ public:
     void printEdges(vector<Edge> edges);
     void printEdge(const Edge &e);
 
+    void reduceZero(MGraph *graph);
 
 protected:
-    MGraph *m_graph;
-    MGraph *m_graphCopy;
+    MGraph m_graph;
+    MGraph m_graphCopy;
     Graph m_input;
     int m_depth;
 };

@@ -1,23 +1,22 @@
 #include "state_approx3.h"
-#include <cassert>
 #include "randomize.h"
-#include <algorithm>
 using namespace std;
 
 
 StateApprox3::StateApprox3(Graph g) : State(g)
 {
 }
-int StateApprox3::solve()
+MGraph StateApprox3::solve(MGraph graph)
 {
     Randomize r;
 
-    MGraph res(m_input);
+    MGraph res(&graph);
+    res.clear();
 
-    set<NodeT> nodes = m_graph->nodesSet();
+    set<NodeT> nodes = graph.nodesSet();
     while(!nodes.empty()) {
         NodeT u = r.randomElement(nodes);
-        set<NodeT> cluster = m_graph->neighborhood(u);
+        set<NodeT> cluster = graph.neighborhood(u);
         cluster.insert(u);
         cluster = set_intersect(cluster, nodes);
         for(NodeT v : cluster) {
@@ -28,5 +27,5 @@ int StateApprox3::solve()
             nodes.erase(v);
         }
     }
-    printEdges(m_graph->difference(&res));
+    return res;
 }
