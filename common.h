@@ -1,11 +1,12 @@
 #ifndef COMMON_H
 #define COMMON_H
 
-#define _DEBUG
+//#define _DEBUG
 #include "graph.h"
 #include <cstring>
 #include <tuple>
 #include <set>
+#include <map>
 #include "graph.h"
 class Common
 {
@@ -17,6 +18,7 @@ public:
     static void printMatrix(int **matrix, unsigned int size);
     static void printVector(int *vector, unsigned int size);
 
+    static map<string, string> parseConfig(int argc, char* argv[]);
 
 };
 

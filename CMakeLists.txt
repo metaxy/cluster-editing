@@ -13,10 +13,11 @@ set( cluster_SRCS
     state.cpp
     common.cpp
     randomize.cpp
+    anyoption.cpp
 )
 ADD_DEFINITIONS(
     -std=c++11
-    -Ofast
+   # -Ofast
 )
 include_directories(
    ${GUROBI_PATH}/include
@@ -25,6 +26,7 @@ add_executable(ce-blp ${cluster_SRCS} gurobilp.cpp  state_blp.cpp main_blp.cpp )
 add_executable(ce-blp-rel ${cluster_SRCS} gurobilp.cpp  state_blp_rel.cpp main_blp_rel.cpp)
 add_executable(ce-lp-round ${cluster_SRCS} gurobilp.cpp state_lp_round.cpp main_lp_round.cpp)
 add_executable(ce-approx3 ${cluster_SRCS} state_approx3.cpp main_approx3.cpp)
+add_executable(ce-branch ${cluster_SRCS} state_branch.cpp main_branch.cpp)
 find_library(G1 libgurobi_g++4.2.a ${GUROBI_PATH}/lib)
 find_library(G2 libgurobi.so.6.0.0 ${GUROBI_PATH}/lib)
 

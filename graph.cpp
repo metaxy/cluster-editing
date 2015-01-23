@@ -2,7 +2,7 @@
 #include <fstream>
 #include "graph.h"
 
-Graph::Graph() : nNodes(0), k(0), firstEdge(NULL), firstNode(NULL) {}
+Graph::Graph() : nNodes(0), firstEdge(NULL), firstNode(NULL) {}
 
 
 void Graph::reset()
@@ -48,18 +48,6 @@ int Graph::read(istream &infile)
     return 1;
 }
 
-void Graph::build(int nn, int nc, int m1, int m2, Graph *delta)
-{
-	int i, j, m, n;
-	k = 0; n = 0;
-	intNodes(nn);
-	for (i=0; i<nn; i++)
-		for (j=i+nc; j<nn; j+=nc)
-			if ((++n) % m1) insertEdge(i, j); else {k++; if (delta) delta->insertEdge(i, j);}
- 	if (m2) for (i=0; i<nn; i++)
-		for (j=i+nc; j<nn; j+=nc)
-			if (!((++n) % m2)) {m = j-nc/2; insertEdge(i, m); k++; if (delta) delta->insertEdge(i, m);}
-}
 
 void Graph::intNodes(int n)
 {

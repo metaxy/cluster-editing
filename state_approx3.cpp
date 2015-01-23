@@ -9,8 +9,7 @@ StateApprox3::StateApprox3(Graph g) : State(g)
 MGraph StateApprox3::solve(MGraph graph)
 {
     Randomize r;
-
-    MGraph res(&graph);
+    MGraph res(graph);
     res.clear();
 
     set<NodeT> nodes = graph.nodesSet();

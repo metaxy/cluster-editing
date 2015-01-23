@@ -10,6 +10,7 @@ public:
     MGraph(int nodeCount);
     MGraph(Graph input);
     MGraph(MGraph *copy);
+    MGraph(const MGraph &copy);
     ~MGraph();
     void addEdge(const Edge &e);
     bool connected(const Edge &e) const;
@@ -48,15 +49,18 @@ public:
     int mergeCost(NodeT u, NodeT v) const;
     int mergeCost(Edge e) const;
     vector<Edge> connectedEdges() const;
+
+    bool connected(NodeT x, NodeT y) const;
+
+    bool isP3(P3 p3);
 private:
     int m_nodeCount;
     Graph m_input;
-    bool connected(NodeT x, NodeT y) const;
     int absolut(NodeT u, NodeT v) const;
     int getWeight(NodeT x, NodeT y) const;
     
-    NodeT **m_matrix;
-    NodeT *m_deleted;
+    NodeT **m_matrix = nullptr;
+    NodeT *m_deleted = nullptr;
 
 };
 

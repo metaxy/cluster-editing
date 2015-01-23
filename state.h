@@ -29,11 +29,17 @@ public:
 
     void reduceZero(MGraph *graph);
 
+    void setConfig(map<string,string> config);
+
 protected:
-    MGraph m_graph;
-    MGraph m_graphCopy;
+    //MGraph m_graphCopy;
     Graph m_input;
     int m_depth;
+
+
+    bool m_flag_reduceZero = false;
+private:
+    MGraph m_graph;
 };
 
 #endif // STATE2619_H

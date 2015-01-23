@@ -35,7 +35,6 @@ class Graph
 {
 public:
     int nNodes;
-    int k;
     GEdge *firstEdge;
     GNode *firstNode;
 
@@ -44,7 +43,6 @@ public:
     int read(char *filename = NULL);
 	int read(istream &is);
 	void intNodes(int n);
-	void build(int nn, int nc, int m1, int m2, Graph *delta=NULL);
     int insertEdge(NodeT Node1, NodeT Node2);
     int insertEdge(string Node1, string Node2);
     int getNodeByName(string Name);

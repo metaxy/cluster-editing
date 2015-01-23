@@ -1,7 +1,7 @@
 BIN_PATH=./build
 #INSTANCES_PATH=../programs/instances
 INSTANCES_PATH=/home/paul/Cloud/studium/Cluster/programs/instances/
-names=("ce-approx3")
+names=("ce-approx3" "ce-approx3 --reduceZero")
 TYPE="synthetic"
 FILES=$(ls $INSTANCES_PATH/$TYPE/*.txt)
 
@@ -15,11 +15,12 @@ for GRAPH in ${FILES[@]}; do
     kfull2=($kfull)
     kcorrect=${kfull2[1]}
 
-    for PROG in ${names[@]}; do
-        echo -ne "$TYPE/$g $PROG "
+    for IX in ${!names[*]}; do
+        PROG=${names[$IX]}
+        echo -ne "$TYPE/$g;$PROG;"
         kb=$($BIN_PATH/$PROG < "$GRAPH" | grep -ve "^#" | grep -v '^$' | wc -l)
         abs=$(expr $kb - $kcorrect)
-        echo "$kcorrect $kb $abs"
+        echo "$kcorrect;$kb;$abs"
     done
 done
 

@@ -3,6 +3,7 @@
 #include <sstream>
 #include <fstream>
 #include <iomanip>
+#include "anyoption.h"
 using namespace std;
 Common::Common()
 {
@@ -77,4 +78,35 @@ void Common::printVector(int *vector, unsigned int size)
 #endif
 }
 
+map<string, string> Common::parseConfig(int argc, char* argv[])
+{
+    map<string,string> config;
+    AnyOption *opt = new AnyOption();
+    opt->addUsage( "" );
+    opt->addUsage( "Usage: " );
+    opt->addUsage( "" );
+    opt->addUsage( "" );
+    opt->setFlag( "help", 'h' );
+    opt->setFlag( "reduceAll" );
+    opt->setFlag( "reduceZero" );
+
+    /* go through the command line and get the options  */
+    opt->processCommandArgs( argc, argv );
+
+    if( opt->getFlag( "help" ) || opt->getFlag( 'h' ) ) {
+        opt->printUsage();
+    }
+
+    if( opt->getValue( "reduceAll" ) != NULL) {
+        config["reduceAll"] = "1";
+    }
+
+    if( opt->getValue( "reduceZero" ) != NULL) {
+        config["reduceZero"] = "1";
+    }
+
+    /* 8. DONE */
+    delete opt;
+    return config;
+}
 
