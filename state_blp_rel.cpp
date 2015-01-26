@@ -21,9 +21,13 @@ MGraph StateBlpRel::solve(MGraph graph)
         int lastSize = knownP3.size();
         int counter = 0;
         while(!knownP3.empty()) {
+            clog << "iteration " << knownP3.size();
             g.addConstraints(knownP3);
             Model ret = g.optimize();
             for(const auto &i: ret) {
+                if(i.second != 0 || i.second != 1) {
+                    clog << "not empty" << i.second << endl;
+                }
                 graph.setWeight(i.first, i.second);
             }
             knownP3 = graph.findAllP3s();
