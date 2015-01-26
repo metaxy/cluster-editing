@@ -9,6 +9,9 @@ StateBlpRel::StateBlpRel(Graph g) : State(g)
 MGraph StateBlpRel::solve(MGraph graph)
 {
     try {
+        MGraph res(graph);
+        res.clear();
+        MGraph copy(graph);
         GurobiLP g(graph.nodeCount());
         Model model = graph.createModel();
         g.addModelVarsRelaxed(model);
@@ -26,11 +29,26 @@ MGraph StateBlpRel::solve(MGraph graph)
             knownP3 = graph.findAllP3s();
             if(lastSize == knownP3.size()) {
                 for(const auto &i: ret) {
-                    if(r.choice(0.5))
+                    if(r.choice(0.1))
                         graph.setWeight(i.first, 1-i.second);
                 }
                 counter++;
-                if(counter > 100) return graph;
+                if(counter > 2) {
+                    set<NodeT> nodes = copy.nodesSet();
+                    while(!nodes.empty()) {
+                        NodeT u = r.randomElement(nodes);
+                        set<NodeT> cluster = copy.closedNeighborhood(u);
+                        cluster = set_intersect(cluster, nodes);
+                        for(NodeT v : cluster) {
+                            for(NodeT w : cluster) {
+                                if(v == w) continue;
+                                res.setWeight(Edge(v,w), 1);
+                            }
+                            nodes.erase(v);
+                        }
+                    }
+                    return res;
+                }
             }
             lastSize = knownP3.size();
         }
