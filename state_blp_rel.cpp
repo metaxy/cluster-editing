@@ -16,6 +16,7 @@ MGraph StateBlpRel::solve(MGraph graph)
         Randomize r;
         vector<P3> knownP3 = graph.findAllP3s();
         int lastSize = knownP3.size();
+        int counter = 0;
         while(!knownP3.empty()) {
             g.addConstraints(knownP3);
             Model ret = g.optimize();
@@ -23,12 +24,15 @@ MGraph StateBlpRel::solve(MGraph graph)
                 graph.setWeight(i.first, i.second);
             }
             knownP3 = graph.findAllP3s();
-            if(lastSize*0.8 > knownP3.size()) {
+            if(lastSize == knownP3.size()) {
                 for(const auto &i: ret) {
-                    if(r.choice(0.1))
+                    if(r.choice(0.5))
                         graph.setWeight(i.first, 1-i.second);
                 }
+                counter++;
+                if(counter > 100) return graph;
             }
+            lastSize = knownP3.size();
         }
         return graph;
     } catch(GRBException e) {
