@@ -13,7 +13,6 @@ public:
     int branch();
     MGraph m_mgraph;
 
-    int m_k;
     int m_depth;
     int m_branchCounter;
     P3 findNextBestP3();

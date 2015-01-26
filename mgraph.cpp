@@ -238,6 +238,35 @@ Edge MGraph::edge(NodeT x, NodeT y)
     if(x > y) return Edge(y,x);
     return Edge(x,y);
 }
+bool MGraph::hasSameNeighbours(NodeT u, NodeT v)
+{
+    NodeT i;
+    for (i=0; i<u; i++) if (!isDeleted(i) && (connected(i,u) != connected(i, v))) return false;
+    for (i++; i<v; i++) if (!isDeleted(i) && (connected(u,i) != connected(i, v))) return false;
+    for (i++; i<m_nodeCount; i++) if (!isDeleted(i) && (connected(u,i) != connected(v, i))) return false;
+    return true;
+}
+P3 MGraph::findP3() const
+{
+    de("find all p3s");
+    for(int i = 0; i < m_nodeCount; i++) {
+        if(isDeleted(i)) continue;
+
+        for(int j = 0; j < m_nodeCount; j++) {
+            if(isDeleted(j) || i == j || !connected(i,j)) continue;
+
+            for(int k = 0; k < m_nodeCount; k++) {
+                if(isDeleted(k)) continue;
+
+                if(j != k && i != k && connected(j,k) && !connected(i,k)) {
+                    return P3(i,j,k);
+                }
+            }
+
+        }
+    }
+    return P3(0,0,0);
+}
 vector<P3> MGraph::findAllP3s() const
 {
     de("find all p3s");
@@ -260,6 +289,37 @@ vector<P3> MGraph::findAllP3s() const
     }
     return ret;
 }
+P3 MGraph::findNextBestP3(int minCost) const
+{
+    P3 bestP3(0,0,0);
+    int bestCost = -1;
+    for(int i = 0; i < m_nodeCount; i++) {
+        if(isDeleted(i)) continue;
+
+        for(int j = 0; j < m_nodeCount; j++) {
+            if(isDeleted(j) || i == j || !connected(i,j)) continue;
+
+            const int cost = mergeCost(i,j);
+            bool has_p3 = false;
+            for(int k = 0; k < m_nodeCount; k++) {
+                if(isDeleted(k)) continue;
+                if(j != k && i != k && connected(j,k) && !connected(i,k)) {
+                    bestP3 = P3(i,j,k);
+                    assert(isP3(bestP3));
+                    bestCost = cost;
+                    has_p3 = true;
+                    break;
+                }
+            }
+            if(has_p3 && minCost > 0 && cost > minCost) return bestP3;
+        }
+
+    }
+    if(bestP3 == P3(0,0,0)) return findP3();
+    assert(isP3(bestP3) || bestP3 == P3(0,0,0));
+    return bestP3;
+}
+
 int MGraph::nodeCount() const
 {
     return m_nodeCount;
@@ -325,7 +385,38 @@ set<NodeT> MGraph::neighborhood(NodeT node) const
     }
     return ret;
 }
-
+set<NodeT> MGraph::closedNeighborhood(NodeT node) const
+{
+    set<NodeT> ret = neighborhood(node);
+    ret.insert(node);
+    return ret;
+}
+int MGraph::costMakingClique(NodeT node)
+{
+    set<NodeT> n = closedNeighborhood(node);
+    int ret = 0;
+    for(NodeT v : n) {
+        for(NodeT w : n) {
+            if(!connected(v,w)) {
+                ret += abs(getWeight(v,w));
+            }
+        }
+    }
+    return ret;
+}
+int MGraph::costCutting(NodeT node)
+{
+    set<NodeT> n = closedNeighborhood(node);
+    int ret = 0;
+    for(NodeT v : n) {
+        for(NodeT w : nodes()) {
+            if(n.count(w) == 0 && connected(v,w)) {
+                ret += getWeight(v,w);
+            }
+        }
+    }
+    return ret;
+}
 void MGraph::printMatrix() const
 {
     #ifdef _DEBUG
@@ -395,7 +486,7 @@ int MGraph::mergeCost(Edge e) const
 {
     return mergeCost(e.first,e.second);
 }
-bool MGraph::isP3(P3 p3)
+bool MGraph::isP3(P3 p3) const
 {
     const NodeT a = get<0>(p3);
     const NodeT b = get<1>(p3);

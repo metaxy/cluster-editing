@@ -52,7 +52,14 @@ public:
 
     bool connected(NodeT x, NodeT y) const;
 
-    bool isP3(P3 p3);
+    bool isP3(P3 p3) const;
+    P3 findNextBestP3(int minCost=0) const;
+    P3 findP3() const;
+    int costCutting(NodeT node);
+    int costMakingClique(NodeT node);
+    set<NodeT> closedNeighborhood(NodeT node) const;
+    bool hasSameNeighbours(NodeT u, NodeT v);
+
 private:
     int m_nodeCount;
     Graph m_input;

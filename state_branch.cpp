@@ -4,7 +4,7 @@
 using namespace std;
 
 
-StateBranch::StateBranch(Graph g) : State(g), m_depth(0), m_k(0), m_branchCounter(0)
+StateBranch::StateBranch(Graph g) : State(g), m_depth(0), m_branchCounter(0)
 {
 }
 MGraph StateBranch::solve(MGraph graph)
@@ -17,7 +17,7 @@ MGraph StateBranch::solve(MGraph graph)
 }
 int StateBranch::branch()
 {
-    const P3 p3 = findNextBestP3();
+    const P3 p3 = m_mgraph.findNextBestP3(m_depth*0.5);
     const NodeT a = get<0>(p3);
     const NodeT b = get<1>(p3);
     const NodeT c = get<2>(p3);
@@ -49,26 +49,4 @@ int StateBranch::branch()
     m_depth -= m_mgraph.dismerge(e);
     return 1;
 }
-P3 StateBranch::findNextBestP3()
-{
-    P3 bestP3(0,0,0);
-    int bestCost = -1;
-    for(Edge e : m_mgraph.connectedEdges()) {
-        int cost = m_mgraph.mergeCost(e);
-        if(cost > bestCost) {
-            const int a = e.first;
-            const int b = e.second;
-            for(NodeT c : m_mgraph.neighborhood(b)) {
-                if(!m_mgraph.connected(a,c)) {
-                    bestP3 = P3(a,b,c);
-                    assert(m_mgraph.isP3(bestP3));
-                    bestCost = cost;
-                    break;
-                }
-            }
 
-        }
-    }
-    assert(m_mgraph.isP3(bestP3) || bestP3 == P3(0,0,0));
-    return bestP3;
-}

@@ -18,7 +18,6 @@ MGraph StateBlp::solve(MGraph graph)
         vector<P3> knownP3 = graph.findAllP3s();
         while(!knownP3.empty()) {
             g.addConstraints(knownP3);
-            m_recsteps += knownP3.size()*3;
             Model ret = g.optimize();
             for(const auto &i: ret) {
                 graph.setWeight(i.first, i.second);

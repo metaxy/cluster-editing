@@ -19,25 +19,24 @@ public:
 
     virtual void solveFull();
 
-    unsigned int m_k;
-    unsigned int m_recsteps;
-
     list<P3> findAllP3s() const;
 
     void printEdges(vector<Edge> edges);
     void printEdge(const Edge &e);
 
     void reduceZero(MGraph *graph);
+    void reduce2K(MGraph *graph);
 
     void setConfig(map<string,string> config);
 
 protected:
     //MGraph m_graphCopy;
     Graph m_input;
-    int m_depth;
-
+    int m_k;
 
     bool m_flag_reduceZero = false;
+    bool m_flag_reduce2K = false;
+
 private:
     MGraph m_graph;
 };

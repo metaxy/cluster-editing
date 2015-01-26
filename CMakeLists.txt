@@ -17,7 +17,7 @@ set( cluster_SRCS
 )
 ADD_DEFINITIONS(
     -std=c++11
-   # -Ofast
+    -Ofast
 )
 include_directories(
    ${GUROBI_PATH}/include

@@ -8,8 +8,8 @@ Randomize::Randomize() : m_rgen(m_rseed())
 }
 bool Randomize::choice(float probability)
 {
-    std::uniform_int_distribution<int> idist(0,1000);
-    return idist(m_rgen) < probability*1000;
+    std::uniform_int_distribution<int> idist(0,10000);
+    return idist(m_rgen) < probability*10000;
 }
 
 

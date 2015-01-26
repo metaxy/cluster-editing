@@ -89,6 +89,7 @@ map<string, string> Common::parseConfig(int argc, char* argv[])
     opt->setFlag( "help", 'h' );
     opt->setFlag( "reduceAll" );
     opt->setFlag( "reduceZero" );
+    opt->setFlag( "reduce2K" );
 
     /* go through the command line and get the options  */
     opt->processCommandArgs( argc, argv );
@@ -104,7 +105,9 @@ map<string, string> Common::parseConfig(int argc, char* argv[])
     if( opt->getValue( "reduceZero" ) != NULL) {
         config["reduceZero"] = "1";
     }
-
+    if( opt->getValue( "reduce2K" ) != NULL) {
+        config["reduce2K"] = "1";
+    }
     /* 8. DONE */
     delete opt;
     return config;
