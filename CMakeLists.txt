@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.6)
 project(cluster4)
 find_path(
     GUROBI_PATH include/gurobi_c++.h
-    PATHS ~/bin/gurobi600/linux64/ ${PROJECT_SOURCE_DIR}/../gurobi /afs/akt.tu-berlin.de/user/pwalger/gruppe1/gurobi
+    PATHS ~/bin/gurobi600/linux64/ /afs/akt.tu-berlin.de/user/pwalger/gruppe1/gurobi /home/users/w/walger/irb-ubuntu/cluster/gruppe1/gurobi
 )
 message("GUROBI PATH " . ${GUROBI_PATH})
 #/afs/akt.tu-berlin.de/user/pwalger/gruppe1/aufgabe4/gurobi600/)
@@ -17,7 +17,7 @@ set( cluster_SRCS
 )
 ADD_DEFINITIONS(
     -std=c++11
-    -Ofast
+    #    -Ofast
 )
 include_directories(
    ${GUROBI_PATH}/include
