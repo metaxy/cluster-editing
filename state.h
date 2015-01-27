@@ -28,6 +28,9 @@ public:
     void reduce2K(MGraph *graph);
 
     void setConfig(map<string,string> config);
+    virtual void parseConfig();
+
+    double getDouble(const string &name, double def);
 
 protected:
     //MGraph m_graphCopy;
@@ -36,6 +39,8 @@ protected:
 
     bool m_flag_reduceZero = false;
     bool m_flag_reduce2K = false;
+
+    map<string,string> m_config;
 
 private:
     MGraph m_graph;

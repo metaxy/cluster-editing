@@ -82,32 +82,53 @@ map<string, string> Common::parseConfig(int argc, char* argv[])
 {
     map<string,string> config;
     AnyOption *opt = new AnyOption();
+    opt->noPOSIX();
     opt->addUsage( "" );
     opt->addUsage( "Usage: " );
     opt->addUsage( "" );
     opt->addUsage( "" );
     opt->setFlag( "help", 'h' );
-    opt->setFlag( "reduceAll" );
-    opt->setFlag( "reduceZero" );
-    opt->setFlag( "reduce2K" );
+    opt->setOption( "reduceAll" );
+    opt->setOption( "reduceZero" );
+    opt->setOption( "reduce_factor_clique" );
+    opt->setOption( "reduce_exponent_clique" );
+    opt->setOption( "reduce_factor_cutting" );
+    opt->setOption( "reduce_exponent_cutting" );
+    opt->setOption( "reduce_factor_size" );
 
     /* go through the command line and get the options  */
     opt->processCommandArgs( argc, argv );
-
-    if( opt->getFlag( "help" ) || opt->getFlag( 'h' ) ) {
-        opt->printUsage();
-    }
-
     if( opt->getValue( "reduceAll" ) != NULL) {
-        config["reduceAll"] = "1";
+        config["reduceAll"] = opt->getValue( "reduceAll" ) ;
     }
 
     if( opt->getValue( "reduceZero" ) != NULL) {
-        config["reduceZero"] = "1";
+        config["reduceZero"] = opt->getValue( "reduceZero" );
     }
     if( opt->getValue( "reduce2K" ) != NULL) {
-        config["reduce2K"] = "1";
+        config["reduce2K"] = opt->getValue( "reduce2K" );
     }
+    if( opt->getValue( "reduce2K" ) != NULL) {
+        config["reduce2K"] = opt->getValue( "reduce2K" );
+    }
+
+    // StateApprox2K
+    if( opt->getValue( "reduce_factor_clique" ) != NULL) {
+        config["reduce_factor_clique"] = opt->getValue( "reduce_factor_clique" );
+    }
+    if( opt->getValue( "reduce_exponent_clique" ) != NULL) {
+        config["reduce_exponent_clique"] = opt->getValue( "reduce_exponent_clique" );
+    }
+    if( opt->getValue( "reduce_factor_cutting" ) != NULL) {
+        config["reduce_factor_cutting"] = opt->getValue( "reduce_factor_cutting" );
+    }
+    if( opt->getValue( "reduce_exponent_cutting" ) != NULL) {
+        config["reduce_exponent_cutting"] = opt->getValue( "reduce_exponent_cutting");
+    }
+    if( opt->getValue( "reduce_factor_size" ) != NULL) {
+        config["reduce_factor_size"] = opt->getValue( "reduce_factor_size" );
+    }
+
     /* 8. DONE */
     delete opt;
     return config;

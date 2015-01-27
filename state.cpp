@@ -71,14 +71,40 @@ void State::reduce2K(MGraph *graph)
 
 void State::setConfig(map<string, string> config)
 {
-    if(config["reduceAll"] == "1") {
+    if(config["reduceAll"] == "true") {
         m_flag_reduceZero = true;
         m_flag_reduce2K = true;
+    } else {
+        m_flag_reduceZero = false;
+        m_flag_reduce2K = false;
     }
-    if(config["reduceZero"] == "1") {
+    if(config["reduceZero"] == "true") {
         m_flag_reduceZero = true;
+    } else {
+        m_flag_reduceZero = false;
     }
-    if(config["reduce2K"] == "1") {
+    if(config["reduce2K"] == "true") {
         m_flag_reduce2K = true;
+    } else {
+        m_flag_reduce2K = false;
     }
+    m_config = config;
+    parseConfig();
+}
+void State::parseConfig()
+{
+
+}
+
+double State::getDouble(const string &name, double def)
+{
+    auto iter = m_config.find(name);
+    if(iter != m_config.end()) {
+        std::istringstream i(iter->second);
+        double x;
+        if (!(i >> x))
+            return def;
+        return x;
+    }
+    return def;
 }
