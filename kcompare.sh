@@ -1,11 +1,11 @@
 BIN_PATH=./build
-INSTANCES_PATH=../programs/instances
-#INSTANCES_PATH=/home/paul/Cloud/studium/Cluster/programs/instances/
+#INSTANCES_PATH=../programs/instances
+INSTANCES_PATH=/home/paul/Cloud/studium/Cluster/programs/instances/
 #names=("ce-approx3" "ce-approx3 --reduceZero" "ce-approx3 --reduce2K")
-names=("ce-blp-rel")
+names=("ce-approx3")
 #names=("ce-branch --reduceAll")
 #TYPE="synthetic"
-TYPE="synthetic"
+TYPE="biology"
 FILES=$(ls $INSTANCES_PATH/$TYPE/*.*)
 
 cd build
