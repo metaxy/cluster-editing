@@ -25,7 +25,7 @@ Graph Common::graphFromStdin()
         if (node1 == "") continue;
         if (node2 == "")
         {
-            cout << "Eingabefehler\n";
+            cout << "Eingabefehler" << endl;
             return g;
         }
         g.insertEdge(node1, node2);
@@ -48,7 +48,7 @@ Graph Common::graphFromFile(string fileName)
         if (node1 == "") continue;
         if (node2 == "")
         {
-            cout << "Eingabefehler\n";
+            cout << "Eingabefehler" << endl;
             return g;
         }
         g.insertEdge(node1, node2);
@@ -88,16 +88,24 @@ map<string, string> Common::parseConfig(int argc, char* argv[])
     opt->addUsage( "" );
     opt->addUsage( "" );
     opt->setFlag( "help", 'h' );
+    opt->setOption( "seed" );
     opt->setOption( "reduceAll" );
     opt->setOption( "reduceZero" );
     opt->setOption( "reduce_factor_clique" );
+    opt->setOption( "reduce_summand_clique" );
     opt->setOption( "reduce_exponent_clique" );
     opt->setOption( "reduce_factor_cutting" );
+    opt->setOption( "reduce_summand_cutting" );
     opt->setOption( "reduce_exponent_cutting" );
     opt->setOption( "reduce_factor_size" );
+    opt->setOption( "reduce_summand_size" );
 
     /* go through the command line and get the options  */
     opt->processCommandArgs( argc, argv );
+    if( opt->getValue( "seed" ) != NULL) {
+        config["seed"] = opt->getValue( "seed" );
+    }
+
     if( opt->getValue( "reduceAll" ) != NULL) {
         config["reduceAll"] = opt->getValue( "reduceAll" ) ;
     }
@@ -116,17 +124,26 @@ map<string, string> Common::parseConfig(int argc, char* argv[])
     if( opt->getValue( "reduce_factor_clique" ) != NULL) {
         config["reduce_factor_clique"] = opt->getValue( "reduce_factor_clique" );
     }
+    if( opt->getValue( "reduce_summand_clique" ) != NULL) {
+        config["reduce_summand_clique"] = opt->getValue( "reduce_summand_clique" );
+    }
     if( opt->getValue( "reduce_exponent_clique" ) != NULL) {
         config["reduce_exponent_clique"] = opt->getValue( "reduce_exponent_clique" );
     }
     if( opt->getValue( "reduce_factor_cutting" ) != NULL) {
         config["reduce_factor_cutting"] = opt->getValue( "reduce_factor_cutting" );
     }
+    if( opt->getValue( "reduce_summand_cutting" ) != NULL) {
+        config["reduce_summand_cutting"] = opt->getValue( "reduce_summand_cutting" );
+    }
     if( opt->getValue( "reduce_exponent_cutting" ) != NULL) {
         config["reduce_exponent_cutting"] = opt->getValue( "reduce_exponent_cutting");
     }
     if( opt->getValue( "reduce_factor_size" ) != NULL) {
         config["reduce_factor_size"] = opt->getValue( "reduce_factor_size" );
+    }
+    if( opt->getValue( "reduce_summand_size" ) != NULL) {
+        config["reduce_summand_size"] = opt->getValue( "reduce_summand_size" );
     }
 
     /* 8. DONE */

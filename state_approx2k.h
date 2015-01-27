@@ -15,11 +15,14 @@ public:
 private:
      double m_reduce_factor_clique;
      double m_reduce_exponent_clique;
+     double m_reduce_summand_clique;
 
      double m_reduce_factor_cutting;
      double m_reduce_exponent_cutting;
+     double m_reduce_summand_cutting;
 
      double m_reduce_factor_size;
+     double m_reduce_summand_size;
 
 };
 

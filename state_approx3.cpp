@@ -15,8 +15,8 @@ MGraph StateApprox3::solve(MGraph graph)
     set<NodeT> nodes = graph.nodesSet();
     while(!nodes.empty()) {
         NodeT u = r.randomElement(nodes);
-        set<NodeT> cluster = graph.neighborhood(u);
-        cluster.insert(u);
+        //set<NodeT> cluster = graph.closedCostlyNeighborhood(u, 1);
+        set<NodeT> cluster = graph.closedNeighborhood(u);
         cluster = set_intersect(cluster, nodes);
         for(NodeT v : cluster) {
             for(NodeT w : cluster) {

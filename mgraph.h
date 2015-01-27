@@ -59,8 +59,9 @@ public:
     int costMakingClique(NodeT node);
     set<NodeT> closedNeighborhood(NodeT node) const;
     bool hasSameNeighbours(NodeT u, NodeT v);
-
-private:
+    set<NodeT> costlyNeighborhood(NodeT node, int maxCost) const;
+    set<NodeT> closedCostlyNeighborhood(NodeT node, int maxCost) const;
+   private:
     int m_nodeCount;
     Graph m_input;
     int absolut(NodeT u, NodeT v) const;

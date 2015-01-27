@@ -12,12 +12,11 @@ public:
     State(Graph g);
     ~State();
 
-    void branch();
-    void solveZK(Graph *result);
 
     virtual MGraph solve(MGraph graph) = 0;
+    MGraph solveSurely(MGraph graph);
 
-    virtual void solveFull();
+    virtual void solveFull(int count = 1);
 
     list<P3> findAllP3s() const;
 
@@ -30,9 +29,11 @@ public:
     void setConfig(map<string,string> config);
     virtual void parseConfig();
 
-    double getDouble(const string &name, double def);
 
 protected:
+    double getDouble(const string &name, double def);
+    int getInt(const string &name, int def);
+
     //MGraph m_graphCopy;
     Graph m_input;
     int m_k;
@@ -41,6 +42,7 @@ protected:
     bool m_flag_reduce2K = false;
 
     map<string,string> m_config;
+    int m_seed;
 
 private:
     MGraph m_graph;

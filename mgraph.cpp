@@ -385,9 +385,26 @@ set<NodeT> MGraph::neighborhood(NodeT node) const
     }
     return ret;
 }
+set<NodeT> MGraph::costlyNeighborhood(NodeT node, int maxCost) const
+{
+    set<NodeT> ret;
+    for(int i = 0; i< m_nodeCount; i++) {
+        if(isDeleted(i) || node == i) continue;
+        if(mergeCost(node,i) <= maxCost) {
+            ret.insert(i);
+        }
+    }
+    return ret;
+}
 set<NodeT> MGraph::closedNeighborhood(NodeT node) const
 {
     set<NodeT> ret = neighborhood(node);
+    ret.insert(node);
+    return ret;
+}
+set<NodeT> MGraph::closedCostlyNeighborhood(NodeT node, int maxCost) const
+{
+    set<NodeT> ret = costlyNeighborhood(node, maxCost);
     ret.insert(node);
     return ret;
 }

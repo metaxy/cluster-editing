@@ -7,6 +7,6 @@ int main(int argc, char* argv[])
  //   Graph g = Common::graphFromFile("../../programs/material/ce-data/test014.graph");
     StateApprox3 s0(g);
     s0.setConfig(Common::parseConfig(argc, argv));
-    s0.solveFull();
+    s0.solveFull(100);
 	return 0;
 }
