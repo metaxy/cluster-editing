@@ -13,8 +13,8 @@ MGraph StateApprox2K::solve(MGraph graph)
     while(graph.findP3() != P3(0,0,0)) {
         bool someone_merged = false;
         for(NodeT u : graph.nodes()) {
-            set<NodeT> n = graph.neighborhood(u);
-            if(2*clique*graph.costMakingClique(u) + cutting*graph.costCutting(u) <= size*n.size()) {
+            if(graph.fast2K(u, clique, cutting, size)) {
+                set<NodeT> n = graph.neighborhood(u);
                 for(NodeT a : n) {
                     for(NodeT b : n) {
                         if(a == b || graph.isDeleted(a) || graph.isDeleted(b)) continue;
@@ -44,7 +44,7 @@ void StateApprox2K::parseConfig()
 
     m_reduce_factor_cutting = getDouble("reduce_factor_cutting", 0.95);
     m_reduce_exponent_cutting = getDouble("reduce_exponent_cutting", 0.01);//between 0 and 0.9
-    m_reduce_summand_cutting = getDouble("reduce_summand_cutting", 0.005);//between 0 and 0.9
+    m_reduce_summand_cutting = getDouble("reduce_summand_cutting", 0.01);//between 0 and 0.9
 
     m_reduce_factor_size = getDouble("reduce_factor_size", 1);
     m_reduce_summand_size = getDouble("reduce_summand_size", 0);

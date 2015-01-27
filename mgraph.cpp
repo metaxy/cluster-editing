@@ -434,6 +434,25 @@ int MGraph::costCutting(NodeT node)
     }
     return ret;
 }
+bool MGraph::fast2K(NodeT node, float c, float cu, float size) const
+{
+    set<NodeT> n = closedNeighborhood(node);
+    int clique = 0;
+    int cutting = 0;
+    for(NodeT v : n) {
+        for(NodeT w : n) {
+            if(!connected(v,w)) {
+                clique += abs(getWeight(v,w));
+            }
+        }
+        for(NodeT w : nodes()) {
+            if(n.count(w) == 0 && connected(v,w)) {
+                cutting += getWeight(v,w);
+            }
+        }
+    }
+    return 2*c*clique + cu*cutting <= size*n.size();
+}
 void MGraph::printMatrix() const
 {
     #ifdef _DEBUG
