@@ -12,7 +12,13 @@ while a = gets
     next if a.start_with?('#')
     val,opt,k,graph,prog,type = parse(a)
     if(val > 1.03)
-        puts "#{graph} #{opt}"
+        if(Random.rand(3) == 0)
+            puts "#{graph} #{opt}"
+        end
+    else
+        if(Random.rand(12) == 0)
+            puts "#{graph} #{opt}"
+        end 
     end
 end
 

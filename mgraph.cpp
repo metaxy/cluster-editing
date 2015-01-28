@@ -434,7 +434,7 @@ int MGraph::costCutting(NodeT node)
     }
     return ret;
 }
-bool MGraph::fast2K(NodeT node, float c, float cu, float size) const
+bool MGraph::fast2K(NodeT node, float c, float cu, float size, float diff) const
 {
     set<NodeT> n = closedNeighborhood(node);
     int clique = 0;
@@ -451,7 +451,7 @@ bool MGraph::fast2K(NodeT node, float c, float cu, float size) const
             }
         }
     }
-    return 2*c*clique + cu*cutting <= size*n.size();
+    return diff*c*clique + cu*cutting <= size*n.size();
 }
 void MGraph::printMatrix() const
 {

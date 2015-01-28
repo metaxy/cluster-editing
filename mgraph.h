@@ -61,7 +61,7 @@ public:
     bool hasSameNeighbours(NodeT u, NodeT v);
     set<NodeT> costlyNeighborhood(NodeT node, int maxCost) const;
     set<NodeT> closedCostlyNeighborhood(NodeT node, int maxCost) const;
-    bool fast2K(NodeT node, float c, float cu, float size) const;
+    bool fast2K(NodeT node, float c, float cu, float size, float diff) const;
    private:
     int m_nodeCount;
     Graph m_input;

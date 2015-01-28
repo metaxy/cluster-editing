@@ -99,6 +99,7 @@ map<string, string> Common::parseConfig(int argc, char* argv[])
     opt->setOption( "reduce_exponent_cutting" );
     opt->setOption( "reduce_factor_size" );
     opt->setOption( "reduce_summand_size" );
+    opt->setOption( "2k_diff" );
 
     /* go through the command line and get the options  */
     opt->processCommandArgs( argc, argv );
@@ -145,7 +146,9 @@ map<string, string> Common::parseConfig(int argc, char* argv[])
     if( opt->getValue( "reduce_summand_size" ) != NULL) {
         config["reduce_summand_size"] = opt->getValue( "reduce_summand_size" );
     }
-
+    if( opt->getValue( "2k_diff" ) != NULL) {
+        config["2k_diff"] = opt->getValue( "2k_diff" );
+    }
     /* 8. DONE */
     delete opt;
     return config;

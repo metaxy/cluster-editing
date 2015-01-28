@@ -23,6 +23,7 @@ private:
 
      double m_reduce_factor_size;
      double m_reduce_summand_size;
+     double m_2k_diff;
 
 };
 

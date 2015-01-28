@@ -1,6 +1,6 @@
 $BIN_PATH = "./build"
 $INSTANCES_PATH = "smac/instances"
-$NAMES = ["ce-approx2k"]
+$NAMES = ["ce-approx2k -2k_diff 2", "ce-approx2k -2k_diff 1.8", "ce-approx2k -2k_diff 1.5"]
 def getType(name)
     if(name.include? "optK") 
         return "BIO2"
