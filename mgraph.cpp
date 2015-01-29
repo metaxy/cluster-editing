@@ -442,16 +442,17 @@ bool MGraph::fast2K(NodeT node, float c, float cu, float size, float diff) const
     for(NodeT v : n) {
         for(NodeT w : n) {
             if(!connected(v,w)) {
-                clique += abs(getWeight(v,w));
+                clique += abs(m_matrix[v][w]);
             }
         }
+        //todo: improve by deleteing nodes of n from nodes()
         for(NodeT w : nodes()) {
             if(n.count(w) == 0 && connected(v,w)) {
-                cutting += getWeight(v,w);
+                cutting += m_matrix[v][w];
             }
         }
     }
-    return diff*c*clique + cu*cutting <= size*n.size();
+    return diff*c*((float)clique) + cu*((float)cutting) <= size*n.size();
 }
 void MGraph::printMatrix() const
 {

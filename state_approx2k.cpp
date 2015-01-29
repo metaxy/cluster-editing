@@ -14,7 +14,7 @@ MGraph StateApprox2K::solve(MGraph graph)
         bool someone_merged = false;
         for(NodeT u : graph.nodes()) {
             if(graph.fast2K(u, clique, cutting, size, m_2k_diff)) {
-                set<NodeT> n = graph.neighborhood(u);
+                set<NodeT> n = graph.closedNeighborhood(u);
                 for(NodeT a : n) {
                     for(NodeT b : n) {
                         if(a == b || graph.isDeleted(a) || graph.isDeleted(b)) continue;
@@ -48,5 +48,5 @@ void StateApprox2K::parseConfig()
 
     m_reduce_factor_size = getDouble("reduce_factor_size", 1);
     m_reduce_summand_size = getDouble("reduce_summand_size", 0);
-    m_2k_diff = getDouble("2k_diff", 2);
+    m_2k_diff = getDouble("2k_diff", 2.2);
 }
