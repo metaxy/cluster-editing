@@ -48,5 +48,5 @@ void StateApprox2K::parseConfig()
 
     m_reduce_factor_size = getDouble("reduce_factor_size", 1);
     m_reduce_summand_size = getDouble("reduce_summand_size", 0);
-    m_2k_diff = getDouble("2k_diff", 2.2);
+    m_2k_diff = getDouble("2k_diff", 2);
 }
